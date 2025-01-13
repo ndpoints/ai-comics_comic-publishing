@@ -1,0 +1,115 @@
+openapi: 3.0.0
+info:
+  description: API for managing the publishing and distribution of comics.
+  title: Comic Publishing API
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /publications:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Publication"
+                type: array
+          description: A list of publications
+      summary: Get all publications
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Publication"
+        required: true
+      responses:
+        "201":
+          description: Publication created successfully
+      summary: Create a new publication
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /publications/{publicationId}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: publicationId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Publication deleted successfully
+      summary: Delete a publication by ID
+      x-accepts:
+      - application/json
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: publicationId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Publication"
+          description: A single publication
+      summary: Get a publication by ID
+      x-accepts:
+      - application/json
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: publicationId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Publication"
+        required: true
+      responses:
+        "200":
+          description: Publication updated successfully
+      summary: Update a publication by ID
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    Publication:
+      example:
+        publication_id: 0
+        comic_id: 6
+        published_at: 2000-01-23T04:56:07.000+00:00
+        platform: platform
+        status: status
+      properties:
+        publication_id:
+          type: integer
+        comic_id:
+          type: integer
+        published_at:
+          format: date-time
+          type: string
+        status:
+          type: string
+        platform:
+          type: string
+      type: object
